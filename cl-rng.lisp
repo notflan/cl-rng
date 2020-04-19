@@ -26,3 +26,15 @@
 
 (export 'weighted)
 
+(defun shuffle! (sequence &key (provider *default-randomness-provider*))
+  (if (listp sequence)
+      (loop for i from (1- (length sequence)) above 0 do
+	   (rotatef (nth i sequence)
+		    (nth (funcall provider :limit i :transform #'floor) sequence)))
+      (loop for i from (1- (length sequence)) above 0 do
+	   (rotatef (aref sequence i)
+		    (aref sequence (funcall provider :limit i :transform #'floor)))))
+  sequence)
+
+(export 'shuffle!)
+
