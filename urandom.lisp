@@ -11,7 +11,7 @@
 	  (let* ((val (apply '+ (loop for i from 0 below precision collect (read-byte rng))))
 		 (max (* precision 255))
 		 (frac (/ val max)))
-	    (values (* limit frac) frac))))))
+	    (values (* limit frac) val))))))
 
 (defun %urandom-vector (range &rest params)
   (loop for x from 0 below (length range) collect
@@ -27,8 +27,17 @@
       (apply '%urandom-list (cons range params))
       (apply '%urandom-vector (cons range params))))
 
+(defun urandom-bytes (len &key (transform #'identity) (type :vector))
+  (with-open-file (rng "/dev/urandom" :element-type 'unsigned-byte)
+    (let ((vec (make-array len)))
+      (loop for i from 0 below len do (setf (aref vec i) (funcall transform (read-byte rng))))
+      (cond ((eq type :vector) vec)
+	    ((eq type :list) (coerce vec 'list))
+	    (t (coerce vec type))))))
+
 (export 'urandom)
 (export 'urandom-range)
+(export 'urandom-bytes)
 
 ;(defparameter *dice-results* (make-list 10))
 
