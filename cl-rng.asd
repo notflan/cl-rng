@@ -9,5 +9,6 @@
   :depends-on (:cffi)
   :components ((:file "package")
 	       (:file "ffi")
+	       (:file "crandom")
                (:file "urandom")
 	       (:file "cl-rng")))

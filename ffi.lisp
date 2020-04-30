@@ -2,7 +2,7 @@
 (in-package #:cl-rng-ffi)
 
 (define-foreign-library libsrng
-  (:unix (:or "libsrng.so" "libsrng" "./libsrng.so"))
+  (:unix (:or "libsrng.so" "libsrng" "./libsrng.so" "/usr/lib/libsrng.so" "/usr/local/lib/libsrng.so"))
   (t (:default "libsrng")))
 
 (use-foreign-library libsrng)
