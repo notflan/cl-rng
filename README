@@ -1,3 +1,5 @@
+To use crandom, run sudo make install
+
 Prebuild binary signed with https://flanchan.moe/flanchan.asc
 
 To build dependencies yourself run:
