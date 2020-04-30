@@ -19,8 +19,9 @@
 
 (defun %urandom-list (range &rest params)
   (setf (car range) (apply 'urandom params))
-  (unless (null (cdr range))
-    (cons (car range) (apply '%urandom-list (cons (cdr range) params)))))
+  (if (null (cdr range))
+      (cons (car range) nil)
+      (cons (car range) (apply '%urandom-list (cons (cdr range) params)))))
 
 (defun urandom-range (range &rest params)
   (if (listp range)
@@ -39,19 +40,19 @@
 (export 'urandom-range)
 (export 'urandom-bytes)
 
-;(defparameter *dice-results* (make-list 10))
+					;(defparameter *dice-results* (make-list 10))
 
 
-;  (let ((num 0)
-;	(max 10000)
-;	(low 50))
-;    (format t "~%Searching ~a values for >= ~a...~%" max low)
-;    (loop for i from 0 below max do
-;	 (let ((value (apply '+ (urandom-range *dice-results* :limit 6 :transform (lambda (x) (1+ (floor x)))))))
-;	   (and (>= value low)
-;		(incf num)
-;		(format t " -> ~a: ~a~%" i value))))
-;    (format t "Found ~a / ~a (~,8f %)~%" num max (* 100 (/ num max))))
+					;  (let ((num 0)
+					;	(max 10000)
+					;	(low 50))
+					;    (format t "~%Searching ~a values for >= ~a...~%" max low)
+					;    (loop for i from 0 below max do
+					;	 (let ((value (apply '+ (urandom-range *dice-results* :limit 6 :transform (lambda (x) (1+ (floor x)))))))
+					;	   (and (>= value low)
+					;		(incf num)
+					;		(format t " -> ~a: ~a~%" i value))))
+					;    (format t "Found ~a / ~a (~,8f %)~%" num max (* 100 (/ num max))))
 
 
 

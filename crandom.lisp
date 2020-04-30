@@ -21,8 +21,9 @@
 
 (defun %crandom-list (range &rest params)
   (setf (car range) (apply 'crandom params))
-  (unless (null (cdr range))
-    (cons (car range) (apply '%crandom-list (cons (cdr range) params)))))
+  (if (null (cdr range))
+      (cons (car range) nil)
+      (cons (car range) (apply '%crandom-list (cons (cdr range) params)))))
 
 (defun crandom-range (range &rest params)
   (if (listp range)
