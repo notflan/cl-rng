@@ -15,5 +15,20 @@
 						 (loop for x from 0 below precision collect
 						      (crandom))))
 			      precision))))))))
+(defun %crandom-vector (range &rest params)
+  (loop for x from 0 below (length range) collect
+       (setf (aref range x) (apply 'crandom params))))
+
+(defun %crandom-list (range &rest params)
+  (setf (car range) (apply 'crandom params))
+  (unless (null (cdr range))
+    (cons (car range) (apply '%crandom-list (cons (cdr range) params)))))
+
+(defun crandom-range (range &rest params)
+  (if (listp range)
+      (apply '%crandom-list (cons range params))
+      (apply '%crandom-vector (cons range params))))
+
 
 (export 'crandom)
+(export 'crandom-range)
