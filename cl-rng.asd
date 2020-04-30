@@ -6,6 +6,8 @@
   :license  "None"
   :version "0.0.1"
   :serial t
+  :depends-on (:cffi)
   :components ((:file "package")
+	       (:file "ffi")
                (:file "urandom")
 	       (:file "cl-rng")))

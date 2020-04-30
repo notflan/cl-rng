@@ -1,0 +1,5 @@
+Prebuild binary signed with https://flanchan.moe/flanchan.asc
+
+To build dependencies yourself run:
+ make build && sudo make install
+(requires Rust)

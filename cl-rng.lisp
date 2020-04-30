@@ -2,9 +2,9 @@
 
 (in-package :cl-rng)
 
-(defparameter *default-precision* 100
+(defparameter *default-precision* 1
   "Default precision for the default RNG provider")
-(defparameter *default-randomness-provider* #'(lambda (&rest args) (apply #'urandom (append `(:precision ,*default-precision*) args)))
+(defparameter *default-randomness-provider* #'(lambda (&rest args) (apply #'crandom (append `(:precision ,*default-precision*) args)))
   "The default randomness provider used by cl-rng functions")
 
 (defun chance (fraction &key (provider *default-randomness-provider*))
@@ -58,6 +58,7 @@
 ;; Exports
 
 (export '*default-randomness-provider*)
+(export '*default-precision*)
 (defsetf within within-set)
 (export 'range)
 (export 'within)

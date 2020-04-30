@@ -1,1 +1,3 @@
 *~
+libsrng/target/
+libsrng/Cargo.lock
