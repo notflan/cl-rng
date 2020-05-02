@@ -30,6 +30,15 @@
       (apply '%crandom-list (cons range params))
       (apply '%crandom-vector (cons range params))))
 
+(defun crandom-bytes (len &key (transform #'identity) (type :vector))
+  (multiple-value-bind (vec ok) (cl-rng-ffi:ffi-bytes len)
+    (and ok
+      (if (eq type :vector)
+	  (progn
+	    (loop for i from 0 below len do (setf (aref vec i) (funcall transform (aref vec i))))
+	    vec)
+	  (loop for i from 0 below len collect (funcall transform (aref vec i)))))))
 
 (export 'crandom)
 (export 'crandom-range)
+(export 'crandom-bytes)

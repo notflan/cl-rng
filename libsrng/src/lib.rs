@@ -10,6 +10,13 @@ mod tests {
 	let mut f: f64 = 0.0;
 	assert_eq!(sample(&mut f as *mut f64), 1);
     }
+
+    #[test]
+    fn bytes_works() {
+	let mut buf: [u8; 16] = [0; 16];
+
+	assert_eq!(bytes(&mut buf[0] as *mut u8, 16), 1);
+    }
 }
 
 fn get<T: Default>() -> Result<T, Error>
@@ -50,6 +57,25 @@ pub extern "C" fn sample(value: *mut f64) -> i32
 	1
     }) {
 	Ok(v) => v,
+	Err(_) => 0,
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn bytes(value: *mut u8, size: i32) -> i32
+{
+    let mut buf: &mut [u8];
+
+    if size < 0 {
+	return 0
+    }
+    
+    unsafe {
+	buf = std::slice::from_raw_parts_mut(value, size as usize);
+    }
+
+    match getrandom(&mut buf) {
+	Ok(_) => 1,
 	Err(_) => 0,
     }
 }
