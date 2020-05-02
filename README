@@ -1,6 +1,67 @@
-To use crandom, run sudo make install
+Functions:
+  chance (fraction-chance ...)
+   Returns T if the chance was met, NIL if not.
 
-Prebuild binary signed with https://flanchan.moe/flanchan.asc
+  weighted (weights &key (default nil) ...)
+   Takes a list in this format:
+	((value-one . 0.25)
+	 (value-two . 0.50)
+	 (value-three . 0.25))
+   And calculates the result as chances. The values of the alist should total 1, if they are less than one and the chance is not met, return `default`.
+
+  shuffle! (sequence ...)
+   Shuffle a sequence in place.
+   Returns the sequence.
+
+  within (sequence ...)
+   Returns a random element in this sequence.
+
+  within-set (sequence value)
+   Set a random element in `sequence` to `value`.
+   Can be used like: (setf (within seq) value)
+  
+  range (start end &key (integral nil) ...)
+   Returns a random number in the inclusive range of `start` to `end`.
+   If `integral` is not NIL, round to an integer.
+
+All the above functions (except within-set() can take the key parameter `provider`, which defaults to cl-rng:*default-randomness-provider*.
+
+Parameters:
+
+  *default-precision*
+   The default precision of the default randomness provider. Defaults to 1.
+
+  *default-randomness-provider*
+   The default `provider` for the above functions. Should be a function with a lambda list that resembles those of `urandom` and `crandom` functions. Defaults to cl-rng:crandom
+
+Module `urandom`:
+
+  urandom (&key (limit 1.0) (precision 1) (transform nil))
+   Get a random value from /dev/urandom, between 0 and 1 inclusive `precision` times. Multiply its average by `limit`, and transform it by `transform` (if `transform` is not NIL) and return.
+
+  urandom-range (range &key (limit 1.0) (precision 1) (transform nil))
+   Apply `urandom` function to a sequence in place.
+
+  urandom-bytes (len &key (transform #'identity) (type :vector))
+   Get `len` bytes from /dev/urandom and return them as a vector if type is :VECTOR, otherwise a list. Apply `transform` to each element.
+
+Module `crandom` (requires FFI):
+
+  crandom (&key (limit 1.0) (precision 1) (transform #'identity))
+   Get a cryptographically secure random floating point number (64 bit) between 0 and 1 from FFI `precision` times, multiply its average by `limit`, apply `transform` to it and return. If FFI fails, return NIL.
+
+  crandom-range (range &key (limit 1.0) (precision 1) (transform #'identity))
+   Apply `crandom` to a sequence in place.
+
+  crandom-bytes (len &key (transform #'identity) (type :vector))
+   Get `len` cryptographically secure bytes from FFI, apply `transform` to each, collect to vector if type is :VECTOR, list otherwise.
+   If FFI fails, return NIL.
+
+----
+
+To use crandom, run sudo make install. (installs to /usr/local/lib and /usr/lib)
+
+Prebuilt binary signed with https://flanchan.moe/flanchan.asc
 
 To build dependencies yourself run:
  make build && sudo make install
