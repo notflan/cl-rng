@@ -37,9 +37,10 @@ fn double() -> Result<f64, Error>
     Ok( ((long & ((1i64 << 53) - 1)) as f64) * (1_f64 / ((1_i64 << 53) as f64)))
 }
 
-fn populate(mut value: &mut [u8]) -> Result<(), Error>
+fn populate<T>(value: &mut T) -> Result<(), Error>
+    where T: AsMut<[u8]> + ?Sized
 {
-    getrandom(&mut value)?;
+    getrandom(value.as_mut())?;
 
     Ok(())
 }
