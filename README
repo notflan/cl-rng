@@ -61,7 +61,7 @@ Module `crandom` (requires FFI):
 
 To use crandom, run sudo make install. (installs to /usr/local/lib and /usr/lib)
 
-Prebuilt binary signed with https://flanchan.moe/flanchan.asc
+Prebuilt binary signed with https://flanchan.moe/flanchan.asc (2d6b35bb0e22b00e3adfb0b4f9171923fc8bd0be01f47f89bdbbedd759c36b82)
 
 To build dependencies yourself run:
  make build && sudo make install
